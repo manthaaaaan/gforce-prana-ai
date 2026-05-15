@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+twilio
+requests
+python-dotenv
+scikit-learn==1.6.1
+joblib
+pydantic
+google-generativeai
+python-multipart
+groq
