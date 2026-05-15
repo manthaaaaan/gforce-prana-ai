@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HeartPulse, AlertTriangle, Phone, MessageSquare, CheckCircle2, User, Activity, BellRing, X, ArrowUpRight, ArrowDownRight, ArrowLeft, Globe, Watch, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAgentActivity } from '../AgentActivityToast';
 
 // --- Types & Constants ---
 type VitalStatus = 'NORMAL' | 'WARNING' | 'DANGER';
@@ -89,6 +90,7 @@ const Sparkline = ({ data, min, max, color }: { data: number[], min: number, max
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { fireAgentToast } = useAgentActivity();
   const [vitals, setVitals] = useState(INITIAL_VITALS);
   const [scenario, setScenario] = useState<'healthy' | 'warning' | 'critical' | 'deteriorating'>('healthy');
   const [callLanguage, setCallLanguage] = useState<'en' | 'hi' | 'kn'>('en');
@@ -208,6 +210,9 @@ Critical Vitals:
     setDangerMode(true);
     setModalOpen(true);
     setModalState('sending');
+
+    // Fire agent activity toast for hackathon demo
+    fireAgentToast('twilio_alert');
 
     // Trigger real external alerts
     sendAlertsToBackend('Manthan G', vitals, riskScore);

@@ -24,6 +24,27 @@ groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 app = FastAPI(title="Prana Backend")
 
+# Mount modular routers and start background worker
+for module_name in ("auth", "patients", "vitals", "predictions", "alerts", "agents", "consultations", "clinical"):
+    try:
+        module = __import__(f"routes.{module_name}", fromlist=["router"])
+        app.include_router(module.router)
+    except Exception as e:
+        print(f"Failed to include {module_name} router: {e}")
+
+try:
+    from agents.worker import start_background_worker, stop_background_worker
+
+    @app.on_event("startup")
+    async def _start_agents():
+        await start_background_worker()
+
+    @app.on_event("shutdown")
+    async def _stop_agents():
+        await stop_background_worker()
+except Exception as e:
+    print(f"Agent scaffolding not available: {e}")
+
 # Load ML Model
 try:
     model_path = os.path.join(os.path.dirname(__file__), "..", "heart_failure_model.pkl")
@@ -38,6 +59,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        "http://localhost:5174",
         "http://localhost:3000",
     ],
     allow_credentials=True,
@@ -56,45 +78,75 @@ async def health_check():
 # --- Prescription Analysis ---
 @app.post("/analyze-prescription")
 async def analyze_prescription(file: UploadFile = File(...)):
-    if not GEMINI_API_KEY:
-        return {"error": "GEMINI_API_KEY not configured"}
-        
-    try:
-        contents = await file.read()
-        image = PIL.Image.open(io.BytesIO(contents))
-        
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        
-        prompt = """
-        You are an expert pharmacist and doctor AI. 
-        Analyze the provided prescription image. Extract all the medications listed.
-        Return the response strictly as a JSON array of objects with the following keys:
-        - "medicineName" (string)
-        - "dosage" (string, e.g., "500mg")
-        - "frequency" (string, e.g., "1-0-1", "Twice a day", "Once a day")
-        - "duration" (string, e.g., "7 days", "10 days", "Unknown")
-        - "timeOfDay" (array of strings). Please map the frequency accurately to times of day. For example: "1-0-1" maps to ["Morning", "Night"], "1-1-1" maps to ["Morning", "Afternoon", "Night"], "1-0-0" maps to ["Morning"], and "0-1-0" maps to ["Afternoon"].
-        
-        Do not wrap the JSON in Markdown formatting like ```json ... ```. Just return the raw JSON array.
-        If you cannot read the image or find no medicines, return an empty array [].
-        """
-        
-        response = model.generate_content([prompt, image])
-        
-        # Clean the response just in case it contains markdown
-        text = response.text.strip()
-        if text.startswith('```json'):
-            text = text[7:]
-        if text.startswith('```'):
-            text = text[3:]
-        if text.endswith('```'):
-            text = text[:-3]
+    contents = await file.read()
+    
+    prompt = """
+    You are an expert pharmacist and doctor AI. 
+    Analyze the provided prescription image. Extract all the medications listed.
+    Return the response strictly as a JSON array of objects with the following keys:
+    - "medicineName" (string)
+    - "dosage" (string, e.g., "500mg")
+    - "frequency" (string, e.g., "1-0-1", "Twice a day", "Once a day")
+    - "duration" (string, e.g., "7 days", "10 days", "Unknown")
+    - "timeOfDay" (array of strings). Mapping: "1-0-1" -> ["Morning", "Night"], "1-1-1" -> ["Morning", "Afternoon", "Night"], "1-0-0" -> ["Morning"], "0-1-0" -> ["Afternoon"].
+    
+    Return ONLY the raw JSON array. If no medicines found, return [].
+    """
+
+    # Try Gemini first if key exists
+    if GEMINI_API_KEY:
+        try:
+            image = PIL.Image.open(io.BytesIO(contents))
+            model = genai.GenerativeModel('gemini-2.0-flash') # Updated to latest stable
+            response = model.generate_content([prompt, image])
+            text = response.text.strip()
+            # Basic cleanup
+            for tag in ['```json', '```']:
+                if text.startswith(tag): text = text[len(tag):]
+            if text.endswith('```'): text = text[:-3]
+            return json.loads(text.strip())
+        except Exception as e:
+            print(f"Gemini failed, trying Groq fallback: {e}")
+
+    # Fallback to Groq Llama 3.2 Vision
+    if groq_client:
+        try:
+            import base64
+            base64_image = base64.b64encode(contents).decode('utf-8')
             
-        data = json.loads(text.strip())
-        return data
-    except Exception as e:
-        print(f"Error analyzing prescription: {e}")
-        return {"error": str(e)}
+            completion = groq_client.chat.completions.create(
+                model="llama-3.2-11b-vision-preview",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": prompt},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{base64_image}",
+                                },
+                            },
+                        ],
+                    }
+                ],
+                temperature=0.1,
+                response_format={"type": "json_object"}
+            )
+            data = json.loads(completion.choices[0].message.content)
+            # The prompt asks for a list, but response_format json_object might wrap it
+            if isinstance(data, dict) and "medications" in data:
+                return data["medications"]
+            if isinstance(data, dict) and not isinstance(data, list):
+                # Try to find the list inside
+                for val in data.values():
+                    if isinstance(val, list): return val
+            return data
+        except Exception as e:
+            print(f"Groq Vision failed: {e}")
+            return {"error": f"Both Gemini and Groq Vision failed: {str(e)}"}
+
+    return {"error": "Neither GEMINI_API_KEY nor GROQ_API_KEY configured for Vision tasks."}
 
 # --- Chatbot Endpoint ---
 class ChatRequest(BaseModel):
@@ -148,7 +200,7 @@ async def chat_prescription(data: ChatRequest):
 # --- Alert Endpoints ---
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID", "")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "")
-TWILIO_FROM_NUMBER = os.getenv("TWILIO_FROM_NUMBER", "")
+TWILIO_FROM_NUMBER = os.getenv("TWILIO_PHONE_NUMBER", "")
 TO_NUMBER = os.getenv("TO_NUMBER", "")
 PUSHBULLET_TOKEN = os.getenv("PUSHBULLET_TOKEN", "")
 

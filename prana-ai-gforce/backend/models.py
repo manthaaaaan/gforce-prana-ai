@@ -145,3 +145,47 @@ class AlertResponse(BaseModel):
     sent_to: List[str]
     status: AlertStatus
     timestamp: datetime
+
+
+class ConsultationMessage(BaseModel):
+    role: str
+    content: str
+    timestamp: Optional[datetime] = None
+
+
+class ConsultationCreate(BaseModel):
+    patient_id: str
+    doctor_id: Optional[str] = None
+    messages: List[ConsultationMessage]
+    language: Optional[str] = "en"
+
+
+class ConsultationResponse(BaseModel):
+    id: str
+    patient_id: str
+    doctor_id: Optional[str]
+    messages: List[ConsultationMessage]
+    language: Optional[str]
+    created_at: datetime
+    prescription_id: Optional[str] = None
+
+
+class MedicineItem(BaseModel):
+    medicineName: str
+    dosage: Optional[str]
+    frequency: Optional[str]
+    duration: Optional[str]
+
+
+class PrescriptionCreate(BaseModel):
+    consultation_id: str
+    prescribed_by: Optional[str]
+    medicines: List[MedicineItem]
+
+
+class PrescriptionResponse(BaseModel):
+    id: str
+    consultation_id: str
+    prescribed_by: Optional[str]
+    medicines: List[MedicineItem]
+    created_at: datetime

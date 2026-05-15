@@ -1,1 +1,1 @@
-from . import auth, patients, vitals, predictions, alerts
+from . import auth, patients, vitals, predictions, alerts, agents, consultations, clinical

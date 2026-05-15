@@ -15,6 +15,11 @@ class Config:
     TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "")
     TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER", "")
     
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+    PUSHBULLET_TOKEN = os.getenv("PUSHBULLET_TOKEN", "")
+    OMIUM_API_KEY = os.getenv("OMIUM_API_KEY", "")
+    
     FCM_API_KEY = os.getenv("FCM_API_KEY", "")
     FCM_PROJECT_ID = os.getenv("FCM_PROJECT_ID", "")
     

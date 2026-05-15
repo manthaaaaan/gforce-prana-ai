@@ -6,6 +6,12 @@ python-dotenv
 scikit-learn==1.6.1
 joblib
 pydantic
+pandas
+pillow
+email-validator
+python-jose[cryptography]
+passlib[bcrypt]
 google-generativeai
 python-multipart
 groq
+omium

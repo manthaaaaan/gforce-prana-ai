@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Activity, User, Heart, Coffee, AlertTriangle, CheckCircle2, ChevronRight, Cigarette, Droplet, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Activity, User, Heart, Coffee, AlertTriangle, CheckCircle2, Droplet, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { useAgentActivity } from '../AgentActivityToast';
 
 // Define the patient profile type
 interface PatientProfile {
@@ -102,6 +103,7 @@ const PATIENT_PROFILES: PatientProfile[] = [
 
 const Predict: React.FC = () => {
   const navigate = useNavigate();
+  const { fireAgentToast } = useAgentActivity();
   const [loading, setLoading] = useState(false);
   const [activeProfile, setActiveProfile] = useState<string | null>(null);
   const [result, setResult] = useState<{
@@ -116,6 +118,9 @@ const Predict: React.FC = () => {
     setActiveProfile(profile.id);
     setLoading(true);
     setResult(null); // Clear previous result
+    
+    // Fire agent activity toast for hackathon demo
+    fireAgentToast('predict_risk');
     
     // Simulate a brief loading delay for effect
     await new Promise(resolve => setTimeout(resolve, 800));

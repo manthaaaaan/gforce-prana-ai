@@ -42,6 +42,8 @@ const Home: React.FC = () => {
           </div>
           <Link to="/scheduler" className="text-white font-medium text-[14px] hover:opacity-80 transition-opacity">Scheduler</Link>
           <Link to="/predict" className="text-white font-medium text-[14px] hover:opacity-80 transition-opacity">Predict</Link>
+          <Link to="/consultations" className="text-white font-medium text-[14px] hover:opacity-80 transition-opacity">Consultations</Link>
+          <Link to="/autonomous-pipeline" className="text-white font-medium text-[14px] hover:opacity-80 transition-opacity">Agents</Link>
           <Link to="#about" className="text-white font-medium text-[14px] hover:opacity-80 transition-opacity">About</Link>
         </div>
 
@@ -71,6 +73,8 @@ const Home: React.FC = () => {
             <Link to="/dashboard" className="text-white text-xl font-medium" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
             <Link to="/scheduler" className="text-white text-xl font-medium" onClick={() => setMobileMenuOpen(false)}>Scheduler</Link>
             <Link to="/predict" className="text-white text-xl font-medium" onClick={() => setMobileMenuOpen(false)}>Predict</Link>
+            <Link to="/consultations" className="text-white text-xl font-medium" onClick={() => setMobileMenuOpen(false)}>Consultations</Link>
+            <Link to="/autonomous-pipeline" className="text-white text-xl font-medium" onClick={() => setMobileMenuOpen(false)}>Agents</Link>
             <Link to="#about" className="text-white text-xl font-medium" onClick={() => setMobileMenuOpen(false)}>About</Link>
 
           </div>
@@ -106,6 +110,18 @@ const Home: React.FC = () => {
             className="flex items-center justify-center bg-[#2563eb] text-white font-cabin font-medium text-[16px] rounded-[10px] px-6 py-3 w-full sm:w-auto hover:bg-[#3b82f6] transition-colors"
           >
             Go to Dashboard
+          </Link>
+          <Link
+            to="/consultations"
+            className="flex items-center justify-center bg-[#10b981] text-white font-cabin font-medium text-[16px] rounded-[10px] px-6 py-3 w-full sm:w-auto hover:bg-[#059669] transition-colors"
+          >
+            Clinical Consultation
+          </Link>
+          <Link
+            to="/autonomous-pipeline"
+            className="flex items-center justify-center bg-[#0f172a] text-[#f6f7f9] font-cabin font-medium text-[16px] rounded-[10px] px-6 py-3 w-full sm:w-auto hover:bg-[#1e293b] transition-colors"
+          >
+            Launch Agents
           </Link>
           <button 
             onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
