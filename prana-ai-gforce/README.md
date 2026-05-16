@@ -1,107 +1,101 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Made_by-Team_Gforce-8B5CF6?style=for-the-badge" />
-</div>
-
-<br />
-
-<div align="center">
-  <h1 align="center">🫀 PRANA</h1>
-  <p align="center">
-    <strong>An AI-Powered Patient Monitoring & Clinical Intelligence Platform</strong>
-    <br />
-    <i>Built by Team Gforce</i>
+  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/activity.svg" alt="Prana AI Logo" width="80" height="80">
+  
+  # Prana AI G-Force
+  **Autonomous Multi-Agent Clinical Intelligence**
+  
+  <p>
+    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind">
+    <img src="https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn">
   </p>
+
+  <p>
+    <em>Bridging the gap between continuous wearable data and clinical triage through autonomous AI orchestration, live internet research, and real-world side effects.</em>
+  </p>
+
+  <h3>Built by Team G-Force at Scaler Institute of Technology 🚀</h3>
 </div>
 
 ---
 
 ## 🌟 Overview
 
-**PRANA** is a next-generation clinical dashboard engineered to monitor, predict, and automate patient care. Combining high-fidelity real-time wearable simulations with bleeding-edge AI integrations, PRANA bridges the gap between chronic patient monitoring and automated clinical intervention.
+Doctors cannot monitor high-risk heart failure patients 24/7. When vitals deteriorate, response time is critical. 
 
-From real-time heart failure prediction to a context-aware smart medicine scheduler powered by multimodal AI, PRANA represents the future of autonomous healthcare.
+**Prana AI** acts as an autonomous digital resident. When it receives a vitals webhook (e.g., from an Apple Watch), it autonomously fans out tasks to a network of specialized AI agents. It uses local Machine Learning to predict risk, live web search for clinical guidelines, and deep reasoning to execute real-world side effects like calling the doctor or sending emergency SMS alerts.
 
----
+## 🛠️ Tech Stack & Integrations
 
-## ✨ Core Features
+### Frontend
+- ⚡ **Vite + React.js**: Lightning-fast, dynamic user interface.
+- 🎨 **Tailwind CSS**: Beautiful, responsive, and modern clinical styling.
+- 📊 **Recharts**: Exponential deterioration plotting and visualizers.
+- 🎤 **Web Speech API**: Live audio transcription for clinical consultations.
 
-### 📡 1. Live Monitoring Command Center
-- **Real-Time Vitals Engine:** High-frequency tracking of Heart Rate, Blood Pressure, Ejection Fraction, and Serum Creatinine via simulated Bluetooth smartwatch sync.
-- **Automated Emergency Protocol:** When vitals crash into the "Danger Zone", PRANA executes geolocation lookups and routes critical payloads to emergency responders.
-- **Multilingual VoIP Alerts:** Dynamically generates Twilio TwiML to broadcast automated emergency voice calls to doctors in **English, Hindi, and Kannada**. **(🚨 NOTE: REAL CALLS AND MESSAGES WILL COME TO YOUR PHONE! 🚨)**
+### Backend & AI
+- 🐍 **FastAPI**: Asynchronous Python backend orchestrating the agent DAG.
+- 🤖 **Groq (LLaMA-3)**: Lightning-fast LLM reasoning for Planner and Context agents.
+- 👁️ **Google Gemini Pro Vision**: OCR extraction for physical prescription pads.
+- 📈 **Scikit-Learn**: Local Random Forest model (`heart_failure_model.pkl`) for deterministic risk scoring, ensuring zero hallucination.
 
-### 🧠 2. AI Predictive Analytics
-- **Machine Learning Risk Scoring:** Uses a trained Random Forest model to analyze 12 distinct clinical parameters, instantly calculating a patient's mortality and deterioration risk.
-- **7-Day Risk Forecast:** Plots an intelligent predictive trajectory visualizing how a patient's health will evolve over the upcoming week.
-- **SHAP Explainability:** Provides transparent insights into *why* the AI generated a specific risk score, highlighting the most dangerous vitals.
-
-### 💊 3. Smart Medicine Scheduler
-- **Vision AI Prescription Sync:** Upload a photo of a doctor's prescription, and Google's **Gemini 2.5 Flash Vision** model will automatically extract and structure the medication name, dosage, and frequency.
-- **Live Dosage Tracking:** An active timeline that constantly cross-references the current time to calculate your exact next dose down to the minute.
-- **Context-Aware Medical Chatbot:** A beautiful floating AI assistant powered by **Groq LLaMA 3.1**. It acts as a pocket pharmacist that understands the exact current time and your active schedule to answer queries like *"What pill do I take next?"* without hallucinating.
-
----
-
-## 🛠️ Technology Stack
-
-### Frontend Architecture
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-
-- **React & Vite:** Lightning-fast frontend tooling and rendering.
-- **Tailwind CSS:** Custom premium glassmorphism styling and dynamic UI animations.
-
-### Backend & Integrations
-![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Twilio](https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=Twilio&logoColor=white)
-![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
-
-- **FastAPI:** High-performance async Python backend server.
-- **Groq API:** LLaMA 3.1 ultra-low-latency clinical reasoning.
-- **Google GenAI:** Gemini 2.5 Flash for multimodal medical image processing.
-- **Twilio & Pushbullet:** High-urgency push and VoIP infrastructure. **(🚨 NOTE: REAL CALLS AND MESSAGES WILL COME TO YOUR PHONE! 🚨)**
+### Tools & Side-Effects
+- 📞 **Twilio API**: Executes physical phone calls localized in English, Hindi, and Kannada.
+- 💬 **Pushbullet API**: Dispatches emergency SMS alerts with high-accuracy GPS links.
+- 🦆 **DuckDuckGo API**: Performs live clinical web research.
+- 🔍 **Omium SDK**: Cryptographic `@omium.trace()` instrumentation across all agents for clinical explainability.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Features
 
-### 1. Configure the Environment
-Ensure your `backend/.env` file is populated with your API keys:
-```env
-GROQ_API_KEY=your_key
-GEMINI_API_KEY=your_key
-TWILIO_ACCOUNT_SID=your_sid
-TWILIO_AUTH_TOKEN=your_token
-TWILIO_FROM_NUMBER=your_number
-TO_NUMBER=your_number
-PUSHBULLET_TOKEN=your_token
-```
+### 1. The Autonomous Pipeline
+A completely human-free triage system. When a webhook is fired:
+1. **Planner Agent** parses the data.
+2. **Risk Agent** generates a deterministic ML risk score.
+3. **Research Agent** scrapes live clinical guidelines.
+4. **Care Plan Agent** synthesizes the data and triggers real-world side-effects (Twilio / Pushbullet).
+5. **Reflection Agent** audits the safety and generates a cryptographic trace hash.
 
-### 2. Start the Backend
-Navigate to the backend directory, install requirements, and boot the server:
-```bash
-cd backend
-pip install -r requirements.txt
-python -m uvicorn main:app --port 8000 --reload
-```
+### 2. Live Clinical Consultations
+A speech-to-text consultation pad that actively listens to the doctor and patient. 
+- Automatically extracts structured JSON prescriptions.
+- Cross-references requested drugs against the patient's EHR to autonomously detect **Drug-Drug Interactions (DDI)** (e.g., Propranolol vs Glimepiride).
 
-### 3. Start the Frontend
-In a separate terminal, start the React interface:
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### 3. Smart Medicine Scheduler
+- Upload an image of a physical prescription, and Gemini Vision will extract and schedule it.
+- Chat naturally with the Groq-powered AI ("What do I take next?") to get temporally-aware dosage instructions.
 
-Visit `http://localhost:5173` to experience the PRANA platform.
+### 4. Random Forest Risk Simulator
+- A visual "what-if" testing sandbox. 
+- Modify 12 clinical parameters (e.g., Ejection Fraction, Serum Creatinine) and watch the local scikit-learn model generate an exponential 7-day mortality deterioration curve.
 
 ---
 
+## 📦 Deployment Instructions
+
+The application is configured to run serverless on edge networks.
+
+### Backend (Render)
+1. Create a Web Service on [Render](https://render.com/).
+2. Root Directory: `prana-ai-gforce/backend`
+3. Build Command: `pip install -r requirements.txt`
+4. Start Command: `uvicorn main:app --host 0.0.0.0 --port 10000`
+5. Inject `.env` variables (Groq, Twilio, Pushbullet, Omium).
+
+### Frontend (Vercel)
+1. Create a Vite project on [Vercel](https://vercel.com/).
+2. Root Directory: `prana-ai-gforce/frontend`
+3. Environment Variable: `VITE_API_URL` = `<your-render-url>`
+
+---
+
+## 🔍 Omium Verified Tracing
+In healthcare, the "black box" of AI is unacceptable. Prana AI is deeply instrumented with the **Omium SDK**. Every single action, webhook fire, and parallel agent execution is traced and causally linked. This allows human doctors to log into the Omium dashboard post-incident and perfectly audit the AI's step-by-step reasoning.
+
+---
 <div align="center">
-  <i>Developed with ❤️ by Team Gforce for the future of healthcare.</i>
+  <p>Engineered for the future of healthcare. ❤️</p>
 </div>
