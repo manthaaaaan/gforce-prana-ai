@@ -198,7 +198,7 @@ Critical Vitals:
           console.warn("Geolocation error:", error);
           sendWithLocation("https://www.google.com/maps?q=12.9716,77.5946 (Estimated)");
         },
-        { timeout: 5000 }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
       sendWithLocation("Location not available");

@@ -19,44 +19,7 @@ interface Schedule {
   active: boolean;
 }
 
-const INITIAL_SCHEDULES: Schedule[] = [
-  {
-    id: '1',
-    patientName: 'Manthan G',
-    medicineName: 'Metformin',
-    dosage: '500mg',
-    times: ['08:00', '20:00'],
-    notifications: { pushbullet: true, phone: true },
-    startDate: new Date().toISOString().split('T')[0],
-    duration: 'until_cancelled',
-    instructions: 'Take after meals',
-    active: true
-  },
-  {
-    id: '2',
-    patientName: 'Manthan G',
-    medicineName: 'Amlodipine',
-    dosage: '5mg',
-    times: ['09:00'],
-    notifications: { pushbullet: true, phone: false },
-    startDate: new Date().toISOString().split('T')[0],
-    duration: 'until_cancelled',
-    instructions: '',
-    active: true
-  },
-  {
-    id: '3',
-    patientName: 'Manthan G',
-    medicineName: 'Aspirin',
-    dosage: '75mg',
-    times: ['22:00'],
-    notifications: { pushbullet: true, phone: true },
-    startDate: new Date().toISOString().split('T')[0],
-    duration: 'until_cancelled',
-    instructions: 'Take before sleep',
-    active: true
-  }
-];
+const INITIAL_SCHEDULES: Schedule[] = [];
 
 const Scheduler: React.FC = () => {
   const navigate = useNavigate();
@@ -293,15 +256,15 @@ const Scheduler: React.FC = () => {
 
     // Test payload
     const testPayload = {
-      medicineName: "Test Medicine",
-      dosage: "1 dose",
+      medicineName: "Metformin",
+      dosage: "500mg",
       patientName: "Manthan G",
-      instructions: "This is a live demo test.",
+      instructions: "Take after meals, avoid dairy",
       notifications: { pushbullet: true, phone: true },
       active: true,
       id: 'test',
-      times: [],
-      startDate: '',
+      times: ['09:00'],
+      startDate: '2026-05-16',
       duration: 'until_cancelled' as const
     };
 
@@ -506,7 +469,7 @@ const Scheduler: React.FC = () => {
             className="flex items-center gap-2 bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border border-yellow-500/50 px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
           >
             <Zap className="w-4 h-4" />
-            Test Notification Now
+            Demo Test Call & Message
           </button>
         </div>
       </header>
@@ -576,6 +539,27 @@ const Scheduler: React.FC = () => {
 
               {activeTab === 'manual' && (
                 <form onSubmit={handleAddSchedule} className="flex flex-col gap-5 animate-in fade-in duration-300">
+                  <div className="flex justify-end -mb-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormPatient('Manthan G');
+                        setFormMedicine('Metformin');
+                        setFormDosage('500mg');
+                        setFormFrequency('once');
+                        setFormTimes(['09:00']);
+                        setFormPushbullet(true);
+                        setFormPhone(true);
+                        setFormStartDate('2026-05-16');
+                        setFormDurationType('until_cancelled');
+                        setFormInstructions('Take after meals, avoid dairy');
+                      }}
+                      className="text-xs font-bold bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/30 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
+                    >
+                      <Zap className="w-3.5 h-3.5" />
+                      Fill Demo Data
+                    </button>
+                  </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-400 mb-1">Patient Name</label>
                     <input type="text" value={formPatient} onChange={(e) => setFormPatient(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition-colors" />

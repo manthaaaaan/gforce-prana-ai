@@ -42,7 +42,7 @@ const DEMO_CASES = [
       bp: '150/95',
       medications: ['Aspirin']
     },
-    transcript: "Doctor: Good morning, John. How are you feeling today?\nPatient: Good morning Doctor. I've been having some chest pain and my legs are swelling a bit, especially around the ankles.\nDoctor: I see. How long has the swelling been happening?\nPatient: About three or four days now. It gets worse by the evening.\nDoctor: Your BP is high at 150/95, which explains the fluid retention. I'm prescribing Lasix 40mg once a day for the swelling.\nPatient: Okay. Should I take it in the morning or at night?\nDoctor: Take it in the morning after food so you don't have to wake up to use the restroom. Let's also start Lisinopril 10mg for your blood pressure to be taken at night before food."
+    transcript: "Doctor: Good morning, John. How are you feeling today?\nPatient: Good morning Doctor. I've been having some chest pain and my legs are swelling a bit, especially around the ankles.\nDoctor: I see. How long has the swelling been happening?\nPatient: About three or four days now. It gets worse by the evening.\nDoctor: Your BP is high at 150/95, which explains the fluid retention. I'm prescribing Lasix 40mg once a day for 15 days for the swelling.\nPatient: Okay. Should I take it in the morning or at night?\nDoctor: Take it in the morning after food so you don't have to wake up to use the restroom. Let's also start Lisinopril 10mg for 30 days for your blood pressure to be taken at night before food."
   },
   {
     language: 'Hindi',
@@ -53,7 +53,7 @@ const DEMO_CASES = [
       bp: '130/85',
       medications: ['Glimepiride']
     },
-    transcript: "Doctor: नमस्ते राजेश, आज आप कैसा महसूस कर रहे हैं?\nPatient: डॉक्टर साहब, मुझे थोड़ी थकान लग रही है और धड़कन तेज महसूस हो रही है।\nDoctor: धड़कन कब से तेज लग रही है आपको?\nPatient: पिछले दो दिनों से, खासकर जब मैं सीढ़ियां चढ़ता हूँ।\nDoctor: आपका ब्लड प्रेशर 130/85 है जो ठीक है। मैं मधुमेह के लिए Metformin 500mg दिन में दो बार खाने के बाद दे रहा हूँ।\nPatient: ठीक है डॉक्टर साहब।\nDoctor: और धड़कन को नियंत्रित करने के लिए Propranolol 20mg दिन में एक बार खाने से पहले लें। क्या आप पहले से कोई और दवा ले रहे हैं?\nPatient: सिर्फ Glimepiride ले रहा हूँ जो आपने पहले दी थी।"
+    transcript: "Doctor: नमस्ते राजेश, आज आप कैसा महसूस कर रहे हैं?\nPatient: डॉक्टर साहब, मुझे थोड़ी थकान लग रही है और धड़कन तेज महसूस हो रही है।\nDoctor: धड़कन कब से तेज लग रही है आपको?\nPatient: पिछले दो दिनों से, खासकर जब मैं सीढ़ियां चढ़ता हूँ।\nDoctor: आपका ब्लड प्रेशर 130/85 है जो ठीक है। मैं मधुमेह के लिए Metformin 500mg दिन में दो बार खाने के बाद 30 दिन के लिए दे रहा हूँ।\nPatient: ठीक है डॉक्टर साहब।\nDoctor: और धड़कन को नियंत्रित करने के लिए Propranolol 20mg दिन में एक बार खाने से पहले 15 दिन के लिए लें। क्या आप पहले से कोई और दवा ले रहे हैं?\nPatient: सिर्फ Glimepiride 2mg ले रहा हूँ।"
   },
   {
     language: 'Kannada',
@@ -64,7 +64,7 @@ const DEMO_CASES = [
       bp: '120/80',
       medications: []
     },
-    transcript: "Doctor: ನಮಸ್ಕಾರ ಮಂಜುಳಾ, ಹೇಗಿದ್ದೀರಾ?\nPatient: ನಮಸ್ಕಾರ ಡಾಕ್ಟರ್, ನನಗೆ ಸ್ವಲ್ಪ ಉಸಿರಾಟದ ತೊಂದರೆ ಇದೆ ಮತ್ತು ಕೆಮ್ಮು ಇದೆ.\nDoctor: ಇದು ಎಷ್ಟು ದಿನಗಳಿಂದ ಶುರುವಾಗಿದೆ? ರಾತ್ರಿ ಹೊತ್ತು ಜಾಸ್ತಿ ಆಗುತ್ತಾ?\nPatient: ಹೌದು ಡಾಕ್ಟರ್, ಮೂರು ದಿನಗಳಿಂದ. ರಾತ್ರಿ ಮಲಗಿದಾಗ ತುಂಬಾ ಕೆಮ್ಮು ಬರುತ್ತದೆ.\nDoctor: ನಿಮ್ಮ ಬಿಪಿ 120/80 ಇದೆ, ನಾರ್ಮಲ್ ಇದೆ. ಉಸಿರಾಟದ ತೊಂದರೆಗೆ ನಾನು Salbutamol inhaler ಅನ್ನು ದಿನಕ್ಕೆ ಎರಡು ಬಾರಿ ಬರೆಯುತ್ತಿದ್ದೇನೆ.\nPatient: ಇನ್ಹೇಲರ್ ಅನ್ನು ಊಟದ ಮುಂಚೆ ತಗೋಬೇಕಾ?\nDoctor: ಊಟದ ನಂತರ ತಗೊಳ್ಳಿ. ಮತ್ತು ಕೆಮ್ಮಿಗೆ Benadryl ಸಿರಪ್ 5ml ರಾತ್ರಿ ಮಲಗುವ ಮುನ್ನ ಊಟದ ಮುಂಚೆ ತೆಗೆದುಕೊಳ್ಳಿ."
+    transcript: "Doctor: ನಮಸ್ಕಾರ ಮಂಜುಳಾ, ಹೇಗಿದ್ದೀರಾ?\nPatient: ನಮಸ್ಕಾರ ಡಾಕ್ಟರ್, ನನಗೆ ಸ್ವಲ್ಪ ಉಸಿರಾಟದ ತೊಂದರೆ ಇದೆ ಮತ್ತು ಕೆಮ್ಮು ಇದೆ.\nDoctor: ಇದು ಎಷ್ಟು ದಿನಗಳಿಂದ ಶುರುವಾಗಿದೆ? ರಾತ್ರಿ ಹೊತ್ತು ಜಾಸ್ತಿ ಆಗುತ್ತಾ?\nPatient: ಹೌದು ಡಾಕ್ಟರ್, ಮೂರು ದಿನಗಳಿಂದ. ರಾತ್ರಿ ಮಲಗಿದಾಗ ತುಂಬಾ ಕೆಮ್ಮು ಬರುತ್ತದೆ.\nDoctor: ನಿಮ್ಮ ಬಿಪಿ 120/80 ಇದೆ, ನಾರ್ಮಲ್ ಇದೆ. ಉಸಿರಾಟದ ತೊಂದರೆಗೆ ನಾನು Salbutamol inhaler 100mcg ಅನ್ನು ದಿನಕ್ಕೆ ಎರಡು ಬಾರಿ 30 ದಿನಗಳವರೆಗೆ ಬರೆಯುತ್ತಿದ್ದೇನೆ.\nPatient: ಇನ್ಹೇಲರ್ ಅನ್ನು ಊಟದ ಮುಂಚೆ ತಗೋಬೇಕಾ?\nDoctor: ಊಟದ ನಂತರ ತಗೊಳ್ಳಿ. ಮತ್ತು ಕೆಮ್ಮಿಗೆ Benadryl ಸಿರಪ್ 5ml ರಾತ್ರಿ ಮಲಗುವ ಮುನ್ನ ಊಟದ ಮುಂಚೆ 5 ದಿನಗಳವರೆಗೆ ತೆಗೆದುಕೊಳ್ಳಿ."
   }
 ];
 
@@ -201,14 +201,25 @@ const Consultations: React.FC = () => {
 
   const resolveConflict = (conflictIdx: number, conflictPair: string, altName: string) => {
     if (!result) return;
-    const newResult = { ...result };
+    // Deep clone to avoid mutating React state
+    const newResult = JSON.parse(JSON.stringify(result));
     
     // Attempt to replace the newly prescribed drug in the prescription array
     for (let i = 0; i < newResult.prescription.length; i++) {
       const medName = newResult.prescription[i].medicineName;
+      const firstWord = medName.toLowerCase().split(' ')[0];
+      
       // If the prescribed medicine is mentioned in the conflict pair, swap it
-      if (conflictPair.toLowerCase().includes(medName.toLowerCase().split(' ')[0])) {
-        newResult.prescription[i].medicineName = altName;
+      if (conflictPair.toLowerCase().includes(firstWord)) {
+        // Ensure we don't replace an existing patient medication
+        const isExisting = activePatientContext?.medications?.some(
+          (m: string) => m.toLowerCase().includes(firstWord)
+        );
+        
+        if (!isExisting) {
+          newResult.prescription[i].medicineName = altName;
+          break; // Stop after replacing one drug to prevent duplicate identical entries
+        }
       }
     }
     

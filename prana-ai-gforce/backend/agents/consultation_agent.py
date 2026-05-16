@@ -34,6 +34,11 @@ class ConsultationAgent:
         2. Extract any medicines discussed or suggested by the doctor.
         3. Check for potential drug-drug conflicts between the new medicines and the patient's existing medications: {json.dumps(patient_context.get('medications', []))}
         4. Generate a structured prescription (JSON format). IMPORTANT: Pay close attention to when the medicine should be taken. You MUST explicitly provide the exact times of day ("morning", "afternoon", "evening", "night") for EVERY single medicine in the `timeOfDay` list.
+        CRITICAL RULE: NEVER use vague terms like "as prescribed earlier" or "continue as before" or "as previously given" for dosage or duration. 
+        You MUST provide a specific numerical dosage (e.g., "500mg") and a specific numerical duration (e.g., "30 days"). 
+        If the duration is not explicitly mentioned, you MUST default to "30 days". 
+        If the dosage is missing, you MUST default to "Standard dose". 
+        Your output MUST NOT contain the string "as prescribed earlier".
         
         Return a JSON object with:
         - "summary": string
