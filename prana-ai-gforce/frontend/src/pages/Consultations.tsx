@@ -89,6 +89,7 @@ const Consultations: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState('');
+  const [_status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'completed'>('idle');
   const [activePatientContext, setActivePatientContext] = useState<any>(null);
 
   // Web Speech API
