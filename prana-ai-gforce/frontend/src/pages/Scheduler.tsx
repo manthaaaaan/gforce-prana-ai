@@ -20,6 +20,7 @@ interface Schedule {
 }
 
 const INITIAL_SCHEDULES: Schedule[] = [];
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const Scheduler: React.FC = () => {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const Scheduler: React.FC = () => {
         history: chatMessages.slice(1).map(m => ({ role: m.role, content: m.content }))
       };
 
-      const response = await fetch('http://localhost:8000/chat-prescription', {
+      const response = await fetch(`${API_BASE}/chat-prescription`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -181,7 +182,7 @@ const Scheduler: React.FC = () => {
     // Pushbullet
     if (schedule.notifications.pushbullet) {
       try {
-        await fetch('http://localhost:8000/pushbullet-alert', {
+        await fetch(`${API_BASE}/pushbullet-alert`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -196,7 +197,7 @@ const Scheduler: React.FC = () => {
     // Phone Call
     if (schedule.notifications.phone) {
       try {
-        await fetch('http://localhost:8000/medicine-call', {
+        await fetch(`${API_BASE}/medicine-call`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -354,7 +355,7 @@ const Scheduler: React.FC = () => {
       const formData = new FormData();
       formData.append('file', prescriptionFile);
 
-      const response = await fetch('http://localhost:8000/analyze-prescription', {
+      const response = await fetch(`${API_BASE}/analyze-prescription`, {
         method: 'POST',
         body: formData,
       });

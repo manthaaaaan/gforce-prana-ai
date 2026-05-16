@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { useAgentActivity } from '../AgentActivityToast';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 // Define the patient profile type
 interface PatientProfile {
   id: string;
@@ -126,7 +128,7 @@ const Predict: React.FC = () => {
     await new Promise(resolve => setTimeout(resolve, 800));
 
     try {
-      const response = await fetch('http://localhost:8000/predict', {
+      const response = await fetch(`${API_BASE}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile.data)

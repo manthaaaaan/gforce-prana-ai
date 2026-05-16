@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAgentActivity } from '../AgentActivityToast';
 
 // --- Types & Constants ---
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 type VitalStatus = 'NORMAL' | 'WARNING' | 'DANGER';
 
 interface Vital {
@@ -159,7 +161,7 @@ Critical Vitals:
 
       try {
         // Send Pushbullet notification via backend
-        await fetch('http://localhost:8000/pushbullet-alert', {
+        await fetch(`${API_BASE}/pushbullet-alert`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message })
@@ -176,7 +178,7 @@ Critical Vitals:
 
       try {
         // Trigger Twilio voice call via backend
-        await fetch('http://localhost:8000/call-alert', {
+        await fetch(`${API_BASE}/call-alert`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ risk_score: currentRiskScore, patient_name: patientName, language: callLanguage })
