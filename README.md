@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/heart-pulse.svg" alt="Prana AI Logo" width="80" height="80">
+  <img src="https://api.iconify.design/lucide:heart-pulse.svg?color=%23ef4444" alt="Prana AI Logo" width="100" height="100">
   
-  # Prana AI G-Force
-  **Autonomous Multi-Agent Clinical Intelligence**
+  <h1>Prana AI G-Force</h1>
+  <h3>Autonomous Multi-Agent Clinical Intelligence</h3>
   
   <p>
     <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
@@ -12,6 +12,7 @@
     <img src="https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn">
   </p>
 
+  <br />
   <p>
     <em>Bridging the gap between continuous wearable data and clinical triage through autonomous AI orchestration, live internet research, and real-world side effects.</em>
   </p>
