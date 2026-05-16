@@ -82,53 +82,91 @@ const Home: React.FC = () => {
       )}
 
       {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center mt-32 px-6">
-        {/* Tagline Pill */}
-        <div className="flex items-center gap-2 bg-[rgba(37,99,235,0.3)] backdrop-blur-md border border-[rgba(147,197,253,0.4)] rounded-[10px] h-[38px] px-2 pr-4 mb-6">
-          <div className="bg-[#2563eb] text-white font-cabin font-medium text-[12px] px-2 py-0.5 rounded-[6px]">
-            AI
+      <div className="relative z-10 flex flex-col items-center justify-center text-center mt-24 md:mt-32 px-6">
+        <style>{`
+          @keyframes heroFadeInUp {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(10px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+          }
+          @keyframes heroShimmer {
+            100% { transform: translateX(200%); }
+          }
+          .glass-hero-panel {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-top: 1px solid rgba(255,255,255,0.3);
+            border-left: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+          }
+        `}</style>
+
+        <div className="glass-hero-panel relative w-full max-w-[1100px] rounded-[40px] p-8 py-16 md:p-20 flex flex-col items-center overflow-hidden">
+          {/* Subtle background glow effect inside the glass */}
+          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-purple-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+
+          {/* Tagline Pill */}
+          <div 
+            className="flex items-center gap-2 bg-blue-500/10 backdrop-blur-md border border-blue-400/30 rounded-full h-[42px] px-2 pr-5 mb-8 relative z-10 shadow-[0_0_20px_rgba(37,99,235,0.2)]"
+            style={{ animation: 'heroFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}
+          >
+            <div className="bg-blue-600 text-white font-cabin font-bold text-[12px] px-3 py-1 rounded-full flex items-center gap-2">
+              <Activity className="w-3 h-3 animate-pulse" /> AI
+            </div>
+            <span className="text-blue-100 font-cabin font-medium text-[14px]">
+              Powered by Random Forest + SHAP Explainability
+            </span>
           </div>
-          <span className="text-white font-cabin font-medium text-[14px]">
-            Powered by Random Forest + SHAP Explainability
-          </span>
-        </div>
 
-        {/* Headline */}
-        <h1 className="font-instrument text-white text-5xl md:text-[96px] leading-[1.1] max-w-[900px] mb-6">
-          Predict patient deterioration <span className="italic pr-1">before</span> it's too late
-        </h1>
+          {/* Headline */}
+          <h1 
+            className="font-instrument text-transparent bg-clip-text bg-gradient-to-br from-white via-blue-100 to-purple-200 text-5xl md:text-[84px] leading-[1.1] max-w-[900px] mb-8 relative z-10 drop-shadow-lg"
+            style={{ opacity: 0, animation: 'heroFadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards' }}
+          >
+            Predict patient deterioration <span className="italic font-light text-blue-300">before</span> it's too late
+          </h1>
 
-        {/* Subtext */}
-        <p className="font-inter font-normal text-[18px] text-white/70 max-w-[662px] mb-10">
-          PRANA monitors chronic patients using 12 clinical vitals — detecting early signs of heart failure and delivering explainable, actionable risk scores to doctors in real time.
-        </p>
+          {/* Subtext */}
+          <p 
+            className="font-inter font-light text-[18px] md:text-[22px] text-gray-300 max-w-[750px] mb-12 relative z-10 leading-relaxed"
+            style={{ opacity: 0, animation: 'heroFadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards' }}
+          >
+            PRANA monitors chronic patients using <strong className="text-white font-medium">12 clinical vitals</strong> — detecting early signs of heart failure and delivering explainable, actionable risk scores to doctors in real time.
+          </p>
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Link 
-            to="/dashboard" 
-            className="flex items-center justify-center bg-[#2563eb] text-white font-cabin font-medium text-[16px] rounded-[10px] px-6 py-3 w-full sm:w-auto hover:bg-[#3b82f6] transition-colors"
+          {/* Actions */}
+          <div 
+            className="flex flex-wrap justify-center items-center gap-4 relative z-10 w-full"
+            style={{ opacity: 0, animation: 'heroFadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards' }}
           >
-            Go to Dashboard
-          </Link>
-          <Link
-            to="/consultations"
-            className="flex items-center justify-center bg-[#8b5cf6] text-white font-cabin font-medium text-[16px] rounded-[10px] px-6 py-3 w-full sm:w-auto hover:bg-[#7c3aed] transition-colors"
-          >
-            Consultations
-          </Link>
-          <Link
-            to="/autonomous-pipeline"
-            className="flex items-center justify-center bg-[#0f172a] text-[#f6f7f9] font-cabin font-medium text-[16px] rounded-[10px] px-6 py-3 w-full sm:w-auto hover:bg-[#1e293b] transition-colors"
-          >
-            Launch Agents
-          </Link>
-          <button 
-            onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex items-center justify-center bg-[#0f172a] text-[#f6f7f9] font-cabin font-medium text-[16px] rounded-[10px] px-6 py-3 w-full sm:w-auto hover:bg-[#1e293b] transition-colors"
-          >
-            See How It Works
-          </button>
+            <Link 
+              to="/dashboard" 
+              className="group relative flex items-center justify-center bg-blue-600 text-white font-cabin font-semibold text-[16px] rounded-full px-8 py-4 w-full sm:w-auto overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]"
+            >
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[heroShimmer_1.5s_infinite]"></div>
+              Go to Dashboard
+            </Link>
+            <Link
+              to="/consultations"
+              className="flex items-center justify-center bg-purple-600/80 backdrop-blur-sm border border-purple-500/50 text-white font-cabin font-semibold text-[16px] rounded-full px-8 py-4 w-full sm:w-auto transition-all hover:bg-purple-500 hover:scale-105 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]"
+            >
+              Consultations
+            </Link>
+            <Link
+              to="/autonomous-pipeline"
+              className="flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 text-white font-cabin font-semibold text-[16px] rounded-full px-8 py-4 w-full sm:w-auto transition-all hover:bg-white/20 hover:scale-105"
+            >
+              Launch Agents
+            </Link>
+            <button 
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+              className="flex items-center justify-center bg-transparent border border-white/10 text-gray-300 font-cabin font-medium text-[16px] rounded-full px-8 py-4 w-full sm:w-auto hover:bg-white/5 hover:text-white transition-all"
+            >
+              See How It Works
+            </button>
+          </div>
         </div>
       </div>
 

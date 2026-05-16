@@ -392,7 +392,7 @@ Critical Vitals:
       )}
 
       {/* Patient Strip */}
-      <header className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-6 py-4">
+      <header className="sticky top-0 z-40 glass-panel border-b border-white/10 px-6 py-4 stagger-1">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center gap-4">
             <button
@@ -437,13 +437,13 @@ Critical Vitals:
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 stagger-2">
 
         {/* Left Column: Vitals & Scenarios */}
         <div className="lg:col-span-8 flex flex-col gap-8">
 
           {/* Scenarios Panel */}
-          <section className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800/50 shadow-xl">
+          <section className="glass-card p-6 rounded-[24px]">
             <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
               <HeartPulse className="w-4 h-4" /> Simulation Controls
             </h2>
@@ -480,7 +480,7 @@ Critical Vitals:
           </section>
 
           {/* Vitals Grid */}
-          <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 stagger-3">
             {Object.values(vitals).map((vital) => {
               const isDanger = vital.status === 'DANGER';
               const isWarning = vital.status === 'WARNING';
@@ -496,7 +496,7 @@ Critical Vitals:
               const trendSame = currVal === lastVal;
 
               return (
-                <div key={vital.id} className={`bg-gray-900 rounded-2xl p-5 border transition-all duration-500 relative overflow-hidden flex flex-col justify-between h-40 ${borderClass}`}>
+                <div key={vital.id} className={`glass-card rounded-[20px] p-5 transition-all duration-500 relative overflow-hidden flex flex-col justify-between h-40 ${borderClass}`}>
                   {isDanger && <div className="absolute inset-0 bg-red-500/5 animate-pulse pointer-events-none"></div>}
 
                   <div className="flex justify-between items-start z-10">
@@ -528,8 +528,8 @@ Critical Vitals:
         </div>
 
         {/* Right Column: Risk Score */}
-        <div className="lg:col-span-4">
-          <section className="bg-gray-900 rounded-3xl p-8 border border-gray-800 shadow-2xl h-full flex flex-col items-center">
+        <div className="lg:col-span-4 stagger-4">
+          <section className="glass-panel rounded-[32px] p-8 h-full flex flex-col items-center">
             <h2 className="text-lg font-bold text-white mb-8 self-start flex items-center gap-2">
               <Activity className="w-5 h-5 text-blue-500" />
               Patient Risk Score

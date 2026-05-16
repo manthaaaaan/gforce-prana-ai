@@ -451,7 +451,7 @@ const Scheduler: React.FC = () => {
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm -z-10"></div>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-6 py-4">
+      <header className="sticky top-0 z-40 glass-panel border-b border-white/10 px-6 py-4 stagger-1">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
             <button
@@ -475,11 +475,11 @@ const Scheduler: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 stagger-2">
 
         {/* LEFT COLUMN */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          <section className="bg-gray-900 rounded-2xl border border-gray-800 shadow-xl overflow-hidden flex flex-col">
+        <div className="lg:col-span-5 flex flex-col gap-6 stagger-3">
+          <section className="glass-card rounded-[24px] overflow-hidden flex flex-col">
             <div className="p-5 border-b border-gray-800 flex items-center gap-2">
               <span className="text-xl">💊</span>
               <h2 className="text-lg font-bold text-white">Add Medication Schedule</h2>
@@ -653,7 +653,7 @@ const Scheduler: React.FC = () => {
         </div>
 
         {/* RIGHT COLUMN */}
-        <div className="lg:col-span-7 flex flex-col gap-4">
+        <div className="lg:col-span-7 flex flex-col gap-4 stagger-4">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <span className="text-xl">📋</span> Active Medication Schedules
@@ -664,14 +664,14 @@ const Scheduler: React.FC = () => {
           </div>
 
           {schedules.length === 0 ? (
-            <div className="bg-gray-900/50 border border-gray-800 border-dashed rounded-2xl flex flex-col items-center justify-center p-12 text-gray-500">
+            <div className="glass-panel border-dashed rounded-[24px] flex flex-col items-center justify-center p-12 text-gray-500 stagger-5">
               <Calendar className="w-12 h-12 mb-4 opacity-50" />
               <p>No active medications scheduled.</p>
             </div>
           ) : (
             <div className="space-y-4 mb-8">
               {schedules.map((schedule) => (
-                <div key={schedule.id} className={`bg-gray-900 rounded-2xl border transition-all duration-300 animate-in slide-in-from-right-8 ${schedule.active ? 'border-gray-700 shadow-lg' : 'border-gray-800 opacity-60 grayscale'}`}>
+                <div key={schedule.id} className={`glass-card rounded-[24px] transition-all duration-300 animate-in slide-in-from-right-8 stagger-5 ${schedule.active ? '' : 'opacity-60 grayscale'}`}>
                   <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
                     <div className="flex items-start gap-4 flex-1">

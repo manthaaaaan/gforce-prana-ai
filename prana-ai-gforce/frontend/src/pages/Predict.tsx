@@ -157,7 +157,7 @@ const Predict: React.FC = () => {
            style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
       
       {/* Header */}
-      <header className="relative z-10 w-full px-6 py-4 flex items-center justify-between border-b border-gray-800 bg-gray-950/50 backdrop-blur-md">
+      <header className="relative z-10 w-full px-6 py-4 flex items-center justify-between border-b border-white/10 glass-panel stagger-1">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate('/')} className="p-2 hover:bg-gray-800 rounded-full transition-colors">
             <ArrowLeft size={20} className="text-gray-400" />
@@ -169,7 +169,7 @@ const Predict: React.FC = () => {
         </div>
       </header>
 
-      <main className="relative z-10 max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8 pt-12">
+      <main className="relative z-10 max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8 pt-12 stagger-2">
         
         {/* Left Column - Profile Selection */}
         <div className="lg:col-span-7 flex flex-col gap-6">
@@ -183,10 +183,10 @@ const Predict: React.FC = () => {
               <div 
                 key={profile.id}
                 onClick={() => !loading && simulatePrediction(profile)}
-                className={`p-5 rounded-2xl border backdrop-blur-md cursor-pointer transition-all duration-300 flex flex-col gap-3
+                className={`p-5 rounded-[24px] cursor-pointer flex flex-col gap-3 stagger-3 glass-card
                   ${activeProfile === profile.id 
                     ? `border-${profile.color}-500 bg-${profile.color}-500/10 shadow-lg shadow-${profile.color}-500/20` 
-                    : 'border-gray-800 bg-gray-900/60 hover:bg-gray-800/80 hover:border-gray-700'}
+                    : ''}
                   ${loading && activeProfile !== profile.id ? 'opacity-50 cursor-not-allowed' : ''}
                 `}
               >
@@ -229,8 +229,8 @@ const Predict: React.FC = () => {
         </div>
 
         {/* Right Column - Results Display */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-md shadow-2xl h-full flex flex-col">
+        <div className="lg:col-span-5 flex flex-col gap-6 stagger-4">
+          <div className="glass-panel rounded-[32px] p-6 h-full flex flex-col">
             <h3 className="text-xl font-bold mb-6 pb-4 border-b border-gray-800">AI Prediction Results</h3>
             
             {!activeProfile ? (

@@ -153,7 +153,7 @@ const AutonomousPipeline: React.FC = () => {
     <div className="relative min-h-screen w-full bg-transparent text-gray-100 font-manrope animate-page-transition">
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm -z-10" />
 
-      <header className="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800 px-6 py-4">
+      <header className="sticky top-0 z-40 glass-panel border-b border-white/10 px-6 py-4 stagger-1">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-gray-800 text-gray-400 hover:text-white transition-colors">
@@ -180,8 +180,8 @@ const AutonomousPipeline: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <section className="lg:col-span-4 bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 stagger-2">
+        <section className="lg:col-span-4 glass-card rounded-[24px] p-6 stagger-3">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-bold text-white">Workflow State</h2>
             <span className={`text-xs uppercase font-bold px-3 py-1 rounded-full border ${status === 'completed' ? 'bg-green-500/10 text-green-400 border-green-500/30' : status === 'failed' ? 'bg-red-500/10 text-red-400 border-red-500/30' : 'bg-blue-500/10 text-blue-400 border-blue-500/30'}`}>
@@ -223,19 +223,19 @@ const AutonomousPipeline: React.FC = () => {
           {error && <div className="mt-4 text-sm text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-3">{error}</div>}
         </section>
 
-        <section className="lg:col-span-8 flex flex-col gap-6">
+        <section className="lg:col-span-8 flex flex-col gap-6 stagger-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-gray-900/80 border border-gray-800 rounded-2xl p-5">
+            <div className="glass-card rounded-[20px] p-5">
               <Clock className="w-5 h-5 text-blue-400 mb-3" />
               <div className="text-2xl font-bold text-white">{detail?.events.length || 0}</div>
               <div className="text-sm text-gray-400">Persisted agent events</div>
             </div>
-            <div className="bg-gray-900/80 border border-gray-800 rounded-2xl p-5">
+            <div className="glass-card rounded-[20px] p-5">
               <Wrench className="w-5 h-5 text-purple-400 mb-3" />
               <div className="text-2xl font-bold text-white">{detail?.tool_calls.length || 0}</div>
               <div className="text-sm text-gray-400">Tool calls recorded</div>
             </div>
-            <div className="bg-gray-900/80 border border-gray-800 rounded-2xl p-5">
+            <div className="glass-card rounded-[20px] p-5">
               <ShieldAlert className="w-5 h-5 text-red-400 mb-3" />
               <div className="text-2xl font-bold text-white">{detail?.task.result?.risk?.risk_score ?? '--'}</div>
               <div className="text-sm text-gray-400">Autonomous risk score</div>
@@ -252,7 +252,7 @@ const AutonomousPipeline: React.FC = () => {
           )}
 
           {carePlan ? (
-            <div className="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+            <div className="glass-card rounded-[24px] p-6 stagger-5">
               <div className="flex items-start justify-between gap-4 mb-5">
                 <div>
                   <h2 className="text-xl font-bold text-white">Final Care Packet</h2>
@@ -284,12 +284,12 @@ const AutonomousPipeline: React.FC = () => {
               )}
             </div>
           ) : (
-            <div className="bg-gray-900/80 border border-gray-800 border-dashed rounded-2xl p-10 text-center text-gray-400">
+            <div className="glass-panel border-dashed rounded-[24px] p-10 text-center text-gray-400 stagger-5">
               The final care packet will appear here after the autonomous agents finish.
             </div>
           )}
 
-          <div className="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+          <div className="glass-card rounded-[24px] p-6 stagger-5">
             <h2 className="font-bold text-white mb-4">Autonomous Tool Insights</h2>
             <div className="space-y-4">
               {researchGuidance && (

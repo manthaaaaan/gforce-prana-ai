@@ -247,7 +247,7 @@ const Consultations: React.FC = () => {
     <div className="relative min-h-screen w-full bg-transparent text-gray-100 font-manrope animate-page-transition">
       <div className="fixed inset-0 bg-black/70 backdrop-blur-md -z-10" />
 
-      <header className="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800 px-6 py-4">
+      <header className="sticky top-0 z-40 glass-panel border-b border-white/10 px-6 py-4 stagger-1">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-gray-800 text-gray-400 hover:text-white transition-colors">
@@ -264,10 +264,10 @@ const Consultations: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 stagger-2">
         {/* Recording Section */}
         <section className="lg:col-span-5 flex flex-col gap-6">
-          <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-8 flex flex-col items-center text-center">
+          <div className="glass-card rounded-[32px] p-8 flex flex-col items-center text-center">
             <div className={`w-24 h-24 rounded-full flex items-center justify-center mb-6 transition-all duration-500 ${isRecording ? 'bg-red-500/20 animate-pulse border-2 border-red-500/50' : 'bg-emerald-500/10 border border-emerald-500/30'}`}>
               {isRecording ? (
                 <Mic className="w-10 h-10 text-red-500" />
@@ -318,7 +318,7 @@ const Consultations: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-6 flex-1">
+          <div className="glass-card rounded-[32px] p-6 flex-1 stagger-3">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-white flex items-center gap-2">
                 <FileText className="w-4 h-4 text-blue-400" />
@@ -364,16 +364,16 @@ const Consultations: React.FC = () => {
         </section>
 
         {/* Results Section */}
-        <section className="lg:col-span-7 flex flex-col gap-6">
+        <section className="lg:col-span-7 flex flex-col gap-6 stagger-4">
           {!result && !isAnalyzing && (
-            <div className="bg-gray-900/40 border-2 border-dashed border-gray-800 rounded-3xl p-12 flex flex-col items-center justify-center text-center text-gray-500 h-full">
+            <div className="glass-panel border-dashed rounded-[32px] p-12 flex flex-col items-center justify-center text-center text-gray-500 h-full">
               <ClipboardList className="w-16 h-16 mb-4 opacity-20" />
               <p className="max-w-xs">Analysis results, drug conflict checks, and generated prescriptions will appear here.</p>
             </div>
           )}
 
           {isAnalyzing && (
-            <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-12 flex flex-col items-center justify-center text-center h-full animate-pulse">
+            <div className="glass-panel rounded-[32px] p-12 flex flex-col items-center justify-center text-center h-full animate-pulse">
               <Bot className="w-16 h-16 mb-6 text-blue-400" />
               <h3 className="text-xl font-bold text-white mb-2">AI Agent at Work</h3>
               <p className="text-gray-400 text-sm max-w-sm">
@@ -385,7 +385,7 @@ const Consultations: React.FC = () => {
           {result && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
               {/* Summary Card */}
-              <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-6 shadow-xl">
+              <div className="glass-card rounded-[24px] p-6 shadow-xl">
                 <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
                    <Bot className="w-5 h-5 text-blue-400" />
                    AI Synthesis & Reasoning
