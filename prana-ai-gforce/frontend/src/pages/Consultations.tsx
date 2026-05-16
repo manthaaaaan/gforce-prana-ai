@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, Mic, MicOff, Play, Save, FileText, 
+  ArrowLeft, Mic, MicOff, Save, FileText, 
   Stethoscope, AlertTriangle, CheckCircle2, Bot,
-  Loader2, ClipboardList, Pill, User
+  Loader2, ClipboardList, User
 } from 'lucide-react';
 import { useAgentActivity } from '../AgentActivityToast';
 
@@ -89,7 +89,6 @@ const Consultations: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState('');
-  const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'completed'>('idle');
   const [activePatientContext, setActivePatientContext] = useState<any>(null);
 
   // Web Speech API

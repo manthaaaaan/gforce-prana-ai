@@ -157,7 +157,6 @@ const AgentToastCard: React.FC<{ toast: AgentToast; onDismiss: () => void }> = (
 
   const isRunning = toast.status === 'running';
   const isCompleted = toast.status === 'completed';
-  const isFailed = toast.status === 'failed';
   const currentStage = toast.subStages && toast.currentSubStage !== undefined ? toast.subStages[toast.currentSubStage] : null;
 
   return (
