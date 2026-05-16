@@ -163,6 +163,51 @@ const Scheduler: React.FC = () => {
     setToasts(prev => [...prev, { id: Date.now() + Math.random(), message, icon }]);
   };
 
+  // Import pending prescriptions from Consultations page
+  useEffect(() => {
+    const pendingStr = localStorage.getItem('pending_prescriptions');
+    if (pendingStr) {
+      try {
+        const pendingMeds = JSON.parse(pendingStr);
+        const newSchedules: Schedule[] = pendingMeds.map((med: any, idx: number) => {
+          let times = ['09:00'];
+          if (med.timeOfDay && Array.isArray(med.timeOfDay) && med.timeOfDay.length > 0) {
+            times = med.timeOfDay.map((t: string) => {
+              const lower = t.toLowerCase();
+              if (lower.includes('morning')) return '09:00';
+              if (lower.includes('afternoon')) return '14:00';
+              if (lower.includes('evening') || lower.includes('night')) return '21:00';
+              return '09:00';
+            });
+          }
+
+          return {
+            id: Date.now() + '-' + idx,
+            patientName: med.patientName || 'Unknown',
+            medicineName: med.medicineName || 'Unknown Medicine',
+            dosage: med.dosage || '',
+            times: Array.from(new Set(times)),
+            notifications: { pushbullet: true, phone: true },
+            startDate: new Date().toISOString().split('T')[0],
+            duration: med.duration || 'until_cancelled',
+            instructions: med.timing ? `${med.frequency} - ${med.timing}. ${med.instructions || ''}` : med.instructions || '',
+            active: true
+          };
+        });
+
+        setSchedules(prev => [...prev, ...newSchedules]);
+        localStorage.removeItem('pending_prescriptions');
+        
+        // Use timeout to ensure toast renders
+        setTimeout(() => {
+          showToast(`✅ Added ${newSchedules.length} medicines from consultation!`, <CheckCircle2 className="w-4 h-4" />);
+        }, 500);
+      } catch (e) {
+        console.error("Error parsing pending prescriptions", e);
+      }
+    }
+  }, []);
+
   // Trigger Notifications
   const triggerNotification = async (schedule: Schedule, _time: string) => {
     if (!schedule.active) return;

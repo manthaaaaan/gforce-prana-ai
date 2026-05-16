@@ -14,6 +14,8 @@ type PrescriptionItem = {
   dosage: string;
   frequency: string;
   duration: string;
+  timing?: string;
+  instructions?: string;
 };
 
 type Conflict = {
@@ -30,6 +32,55 @@ type AnalysisResult = {
   reasoning: string;
 };
 
+const DEMO_CASES = [
+  {
+    language: 'English',
+    patient_context: {
+      name: 'John Doe',
+      age: 58,
+      diagnosis: 'Hypertension & Heart Failure',
+      bp: '150/95',
+      medications: ['Aspirin']
+    },
+    transcript: "Doctor: Good morning, John. How are you feeling today?\nPatient: Good morning Doctor. I've been having some chest pain and my legs are swelling a bit, especially around the ankles.\nDoctor: I see. How long has the swelling been happening?\nPatient: About three or four days now. It gets worse by the evening.\nDoctor: Your BP is high at 150/95, which explains the fluid retention. I'm prescribing Lasix 40mg once a day for the swelling.\nPatient: Okay. Should I take it in the morning or at night?\nDoctor: Take it in the morning after food so you don't have to wake up to use the restroom. Let's also start Lisinopril 10mg for your blood pressure to be taken at night before food."
+  },
+  {
+    language: 'Hindi',
+    patient_context: {
+      name: 'Rajesh Kumar',
+      age: 45,
+      diagnosis: 'Type 2 Diabetes',
+      bp: '130/85',
+      medications: ['Glimepiride']
+    },
+    transcript: "Doctor: नमस्ते राजेश, आज आप कैसा महसूस कर रहे हैं?\nPatient: डॉक्टर साहब, मुझे थोड़ी थकान लग रही है और धड़कन तेज महसूस हो रही है।\nDoctor: धड़कन कब से तेज लग रही है आपको?\nPatient: पिछले दो दिनों से, खासकर जब मैं सीढ़ियां चढ़ता हूँ।\nDoctor: आपका ब्लड प्रेशर 130/85 है जो ठीक है। मैं मधुमेह के लिए Metformin 500mg दिन में दो बार खाने के बाद दे रहा हूँ।\nPatient: ठीक है डॉक्टर साहब।\nDoctor: और धड़कन को नियंत्रित करने के लिए Propranolol 20mg दिन में एक बार खाने से पहले लें। क्या आप पहले से कोई और दवा ले रहे हैं?\nPatient: सिर्फ Glimepiride ले रहा हूँ जो आपने पहले दी थी।"
+  },
+  {
+    language: 'Kannada',
+    patient_context: {
+      name: 'Manjula S',
+      age: 62,
+      diagnosis: 'Asthma',
+      bp: '120/80',
+      medications: []
+    },
+    transcript: "Doctor: ನಮಸ್ಕಾರ ಮಂಜುಳಾ, ಹೇಗಿದ್ದೀರಾ?\nPatient: ನಮಸ್ಕಾರ ಡಾಕ್ಟರ್, ನನಗೆ ಸ್ವಲ್ಪ ಉಸಿರಾಟದ ತೊಂದರೆ ಇದೆ ಮತ್ತು ಕೆಮ್ಮು ಇದೆ.\nDoctor: ಇದು ಎಷ್ಟು ದಿನಗಳಿಂದ ಶುರುವಾಗಿದೆ? ರಾತ್ರಿ ಹೊತ್ತು ಜಾಸ್ತಿ ಆಗುತ್ತಾ?\nPatient: ಹೌದು ಡಾಕ್ಟರ್, ಮೂರು ದಿನಗಳಿಂದ. ರಾತ್ರಿ ಮಲಗಿದಾಗ ತುಂಬಾ ಕೆಮ್ಮು ಬರುತ್ತದೆ.\nDoctor: ನಿಮ್ಮ ಬಿಪಿ 120/80 ಇದೆ, ನಾರ್ಮಲ್ ಇದೆ. ಉಸಿರಾಟದ ತೊಂದರೆಗೆ ನಾನು Salbutamol inhaler ಅನ್ನು ದಿನಕ್ಕೆ ಎರಡು ಬಾರಿ ಬರೆಯುತ್ತಿದ್ದೇನೆ.\nPatient: ಇನ್ಹೇಲರ್ ಅನ್ನು ಊಟದ ಮುಂಚೆ ತಗೋಬೇಕಾ?\nDoctor: ಊಟದ ನಂತರ ತಗೊಳ್ಳಿ. ಮತ್ತು ಕೆಮ್ಮಿಗೆ Benadryl ಸಿರಪ್ 5ml ರಾತ್ರಿ ಮಲಗುವ ಮುನ್ನ ಊಟದ ಮುಂಚೆ ತೆಗೆದುಕೊಳ್ಳಿ."
+  }
+];
+
+const parseTranscript = (text: string) => {
+  if (!text) return [];
+  const lines = text.split('\n');
+  return lines.map(line => {
+    if (line.startsWith('Doctor: ')) {
+      return { sender: 'Doctor', text: line.replace('Doctor: ', '') };
+    } else if (line.startsWith('Patient: ')) {
+      return { sender: 'Patient', text: line.replace('Patient: ', '') };
+    }
+    return { sender: 'System', text: line };
+  });
+};
+
 const Consultations: React.FC = () => {
   const navigate = useNavigate();
   const { fireAgentToast } = useAgentActivity();
@@ -39,6 +90,7 @@ const Consultations: React.FC = () => {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState('');
   const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'completed'>('idle');
+  const [activePatientContext, setActivePatientContext] = useState<any>(null);
 
   // Web Speech API
   const recognitionRef = useRef<any>(null);
@@ -95,7 +147,7 @@ const Consultations: React.FC = () => {
       const res = await fetch(`${API_BASE}/consultations/analyze-transcript`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript, patient_id: 'demo-patient' })
+        body: JSON.stringify({ transcript, patient_id: 'demo-patient', patient_context: activePatientContext })
       });
       const data = await res.json();
       
@@ -141,10 +193,43 @@ const Consultations: React.FC = () => {
     setStatus('idle');
   };
 
-  const loadDemoTranscript = () => {
-    const demo = "Doctor: Good morning, Manthan. How are you feeling today?\nPatient: I've been having some chest pain and my legs are swelling a bit.\nDoctor: I see. Your latest vitals show some fluid retention. I'm going to prescribe you Lasix 40mg once a day to help with the swelling. Also, let's start you on Lisinopril 10mg for your blood pressure. Are you still taking your Aspirin?\nPatient: Yes, I take one every morning.\nDoctor: Good. Let's keep that going. I'll send the new prescriptions over now.";
-    setTranscript(demo);
+  const loadDemoTranscript = (demo: typeof DEMO_CASES[0]) => {
+    setTranscript(demo.transcript);
+    setActivePatientContext(demo.patient_context);
     setStatus('processing');
+  };
+
+  const resolveConflict = (conflictIdx: number, conflictPair: string, altName: string) => {
+    if (!result) return;
+    const newResult = { ...result };
+    
+    // Attempt to replace the newly prescribed drug in the prescription array
+    for (let i = 0; i < newResult.prescription.length; i++) {
+      const medName = newResult.prescription[i].medicineName;
+      // If the prescribed medicine is mentioned in the conflict pair, swap it
+      if (conflictPair.toLowerCase().includes(medName.toLowerCase().split(' ')[0])) {
+        newResult.prescription[i].medicineName = altName;
+      }
+    }
+    
+    // Remove the resolved conflict
+    newResult.conflicts.splice(conflictIdx, 1);
+    setResult(newResult);
+    
+    // Simulate agent action
+    fireAgentToast('consultation_analysis');
+  };
+
+  const handleSaveToScheduler = () => {
+    if (!result || !result.prescription) return;
+    
+    const newMeds = result.prescription.map(med => ({
+      ...med,
+      patientName: activePatientContext?.name || 'Unknown Patient'
+    }));
+    
+    localStorage.setItem('pending_prescriptions', JSON.stringify(newMeds));
+    navigate('/scheduler');
   };
 
   return (
@@ -164,14 +249,6 @@ const Consultations: React.FC = () => {
               </h1>
               <p className="text-sm text-gray-400 mt-1">Record, analyze, and generate prescriptions with multi-agent intelligence.</p>
             </div>
-          </div>
-          <div className="flex gap-3">
-             <button 
-              onClick={loadDemoTranscript}
-              className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg text-sm font-semibold border border-gray-700 transition-all"
-            >
-              Load Demo Case
-            </button>
           </div>
         </div>
       </header>
@@ -204,6 +281,30 @@ const Consultations: React.FC = () => {
               {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
               {isRecording ? 'Stop & Process' : 'Start Recording'}
             </button>
+
+            <div className="w-full mt-6">
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-3 text-left">Select Demo Patient</p>
+              <div className="flex flex-col gap-2">
+                {DEMO_CASES.map((demo, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => loadDemoTranscript(demo)}
+                    className={`flex items-center gap-3 text-left hover:bg-gray-700 border rounded-xl p-3 transition-colors ${activePatientContext?.name === demo.patient_context.name ? 'border-blue-500/50 bg-blue-500/10' : 'bg-gray-800/50 border-gray-700'}`}
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center flex-shrink-0">
+                      <User className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white flex items-center gap-2">
+                        {demo.patient_context.name} <span className="text-gray-500 font-normal">({demo.patient_context.age}y)</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-700 text-gray-300 uppercase">{demo.language}</span>
+                      </div>
+                      <div className="text-[11px] text-gray-400">{demo.patient_context.diagnosis} • BP: {demo.patient_context.bp}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-6 flex-1">
@@ -216,12 +317,25 @@ const Consultations: React.FC = () => {
                  <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Live</span>
               )}
             </div>
-            <div className="bg-gray-950/50 border border-gray-800 rounded-xl p-4 min-h-[200px] max-h-[300px] overflow-auto">
+            <div className="bg-gray-950/50 border border-gray-800 rounded-xl p-4 min-h-[250px] max-h-[400px] overflow-auto flex flex-col gap-3">
               {transcript ? (
-                <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">{transcript}</p>
+                parseTranscript(transcript).map((msg, idx) => (
+                  <div key={idx} className={`flex ${msg.sender === 'Patient' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed ${
+                      msg.sender === 'Doctor' 
+                        ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-100 rounded-tl-sm' 
+                        : msg.sender === 'Patient'
+                          ? 'bg-blue-500/10 border border-blue-500/20 text-blue-100 rounded-tr-sm'
+                          : 'bg-gray-800 text-gray-300'
+                    }`}>
+                      <span className={`text-[10px] uppercase font-bold opacity-60 block mb-1 ${msg.sender === 'Patient' ? 'text-right' : 'text-left'}`}>{msg.sender}</span>
+                      {msg.text}
+                    </div>
+                  </div>
+                ))
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-gray-600 italic text-sm">
-                  Waiting for audio input...
+                  Waiting for audio input or demo selection...
                 </div>
               )}
             </div>
@@ -279,7 +393,12 @@ const Consultations: React.FC = () => {
                     Drug Conflict Warnings ({result.conflicts.length})
                   </h3>
                   <div className="space-y-3">
-                    {result.conflicts.map((conflict, idx) => (
+                    {result.conflicts.map((conflict, idx) => {
+                      // Generate contextual alternatives based on the conflict for the demo
+                      const isBeta = conflict.pair.toLowerCase().includes('propranolol');
+                      const alts = isBeta ? ['Metoprolol', 'Atenolol', 'Carvedilol'] : ['Losartan', 'Valsartan', 'Amlodipine'];
+                      
+                      return (
                       <div key={idx} className="bg-gray-950/80 border border-red-500/20 rounded-2xl p-4">
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-bold text-white text-sm">{conflict.pair}</span>
@@ -287,9 +406,24 @@ const Consultations: React.FC = () => {
                             {conflict.severity} Risk
                           </span>
                         </div>
-                        <p className="text-xs text-gray-400">{conflict.message}</p>
+                        <p className="text-xs text-gray-400 mb-4">{conflict.message}</p>
+                        
+                        <div className="pt-3 border-t border-red-500/20">
+                          <p className="text-[10px] uppercase text-red-300 font-bold mb-2">Resolve Conflict: Select Safe Alternative</p>
+                          <div className="flex flex-wrap gap-2">
+                            {alts.map(alt => (
+                              <button 
+                                key={alt}
+                                onClick={() => resolveConflict(idx, conflict.pair, alt)} 
+                                className="text-xs bg-gray-900 hover:bg-emerald-600/20 hover:text-emerald-400 hover:border-emerald-500/30 text-gray-300 px-3 py-1.5 rounded-lg border border-gray-700 transition-all"
+                              >
+                                {alt}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                    ))}
+                    )})}
                   </div>
                 </div>
               ) : (
@@ -299,36 +433,81 @@ const Consultations: React.FC = () => {
                 </div>
               )}
 
-              {/* Prescription Card */}
-              <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                    <Pill className="w-6 h-6 text-emerald-400" />
-                    Generated Prescription
-                  </h3>
-                  <button className="flex items-center gap-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl text-sm font-bold transition-all">
-                    <Save className="w-4 h-4" /> Save to EMR
-                  </button>
-                </div>
+              {/* Realistic Prescription UI */}
+              <div className="bg-[#f8fafc] rounded-xl p-8 shadow-2xl relative overflow-hidden font-sans text-gray-800 mt-8 max-w-2xl mx-auto border-t-[12px] border-blue-700">
                 
-                <div className="space-y-4">
+                {/* Header */}
+                <div className="flex justify-between items-start mb-6 border-b-2 border-gray-200 pb-4">
+                  <div>
+                    <h2 className="text-3xl font-bold text-blue-900 tracking-tight">PRANA CLINIC</h2>
+                    <p className="text-sm text-gray-600 font-semibold mt-1">Dr. Ramesh Kumar, MD</p>
+                    <p className="text-xs text-gray-500">Cardiology & General Medicine</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-gray-700">Date: {new Date().toLocaleDateString()}</p>
+                    <p className="text-xs text-gray-500 mt-1">123 Health Ave, Bangalore</p>
+                    <p className="text-xs text-gray-500">+91 98765 43210</p>
+                  </div>
+                </div>
+
+                {/* Patient Info */}
+                <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg mb-8 border border-gray-200">
+                  <div>
+                    <p className="text-sm text-gray-800"><span className="font-bold text-gray-600">Patient Name:</span> {activePatientContext?.name || 'Unknown'}</p>
+                    <p className="text-sm text-gray-800 mt-1"><span className="font-bold text-gray-600">Age:</span> {activePatientContext?.age || '--'} yrs</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-800"><span className="font-bold text-gray-600">Blood Pressure:</span> {activePatientContext?.bp || '--'}</p>
+                    <p className="text-sm text-gray-800 mt-1"><span className="font-bold text-gray-600">Diagnosis:</span> {activePatientContext?.diagnosis || '--'}</p>
+                  </div>
+                </div>
+
+                {/* Rx Symbol */}
+                <div className="text-6xl font-serif font-bold text-blue-900 italic mb-6 pl-2 opacity-90">
+                  Rx
+                </div>
+
+                {/* Medications List */}
+                <div className="space-y-6 mb-16 px-6">
                   {result.prescription.map((med, idx) => (
-                    <div key={idx} className="bg-gray-950/50 border border-gray-800 rounded-2xl p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center border border-emerald-500/20">
-                          <Pill className="w-6 h-6 text-emerald-400" />
+                    <div key={idx} className="flex gap-4 border-b border-gray-100 pb-4 last:border-0">
+                      <div className="text-xl font-bold text-gray-400 mt-0.5">{idx + 1}.</div>
+                      <div className="flex-1">
+                        <div className="flex items-baseline justify-between mb-1">
+                          <h4 className="text-xl font-bold text-gray-900">{med.medicineName}</h4>
+                          <span className="text-sm font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">{med.dosage}</span>
                         </div>
-                        <div>
-                          <div className="font-bold text-white">{med.medicineName}</div>
-                          <div className="text-xs text-gray-500">{med.dosage} — {med.duration}</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-semibold text-emerald-400">{med.frequency}</div>
-                        <div className="text-[10px] text-gray-600 uppercase font-bold">Frequency</div>
+                        <p className="text-gray-800 text-sm mt-2">
+                          <span className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mr-2">Sig</span> 
+                          {med.frequency} {med.timing ? `- ${med.timing}` : ''}
+                        </p>
+                        {med.instructions && (
+                          <p className="text-gray-800 text-sm mt-1">
+                            <span className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mr-2">Instructions</span> 
+                            {med.instructions}
+                          </p>
+                        )}
+                        <p className="text-gray-600 text-sm mt-1">
+                          <span className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mr-2">Dispense</span> 
+                          For {med.duration}
+                        </p>
                       </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Footer Signature */}
+                <div className="mt-8 flex justify-between items-end border-t border-gray-200 pt-6">
+                  <div className="flex gap-3">
+                    <button onClick={handleSaveToScheduler} className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-blue-900/20 transition-all">
+                      <Save className="w-4 h-4" /> Save to Scheduler
+                    </button>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl text-blue-900 mb-1" style={{ fontFamily: "'Brush Script MT', 'Dancing Script', cursive" }}>Ramesh Kumar</div>
+                    <div className="border-t-2 border-gray-400 w-48 mx-auto"></div>
+                    <p className="text-[10px] text-gray-500 mt-2 uppercase tracking-widest font-bold">Doctor's Signature</p>
+                  </div>
                 </div>
               </div>
             </div>

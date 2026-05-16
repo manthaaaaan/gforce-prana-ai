@@ -17,14 +17,10 @@ from config import config
 
 logger = logging.getLogger(__name__)
 
+import omium
+
 # Initialize Omium
-omium.configure(
-    OmiumConfig(
-        api_key=config.OMIUM_API_KEY,
-        project="Prana-GForce",
-        auto_trace=True,
-    )
-)
+# Omium automatically reads OMIUM_API_KEY from environment variables
 omium.init()
 
 # Initialize Groq for reasoning
@@ -101,7 +97,7 @@ class ClinicalAutonomyPipeline:
         
         try:
             chat = groq_client.chat.completions.create(
-                model="llama-3.1-70b-versatile",
+                    model="llama-3.3-70b-versatile",
                 messages=[{"role": "user", "content": prompt}],
                 response_format={"type": "json_object"}
             )
@@ -211,7 +207,7 @@ class ClinicalAutonomyPipeline:
             """
             try:
                 chat = groq_client.chat.completions.create(
-                    model="llama-3.1-70b-versatile",
+                        model="llama-3.3-70b-versatile",
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"}
                 )

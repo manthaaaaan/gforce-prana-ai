@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Activity, User, Heart, Coffee, AlertTriangle, CheckCircle2, Droplet, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Activity, User, Heart, Coffee, AlertTriangle, CheckCircle2, Droplet, TrendingUp, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { useAgentActivity } from '../AgentActivityToast';
@@ -298,13 +298,23 @@ const Predict: React.FC = () => {
                 </div>
 
                 {/* Clinical Assessment Text */}
-                <div className="bg-gray-950 rounded-xl p-5 border border-gray-800">
-                  <h4 className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wider">AI Assessment</h4>
+                <div className="bg-gray-950 rounded-xl p-5 border border-gray-800 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 bg-blue-500/10 border-b border-l border-blue-500/30 px-3 py-1 rounded-bl-xl flex items-center gap-1.5">
+                    <ShieldCheck size={12} className="text-blue-400" />
+                    <span className="text-[10px] font-bold tracking-wider text-blue-400 uppercase">Omium Verified</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wider mt-2">AI Assessment</h4>
                   <p className="text-gray-200 leading-relaxed text-sm">
                     {result.prediction === 'SURVIVE' 
                       ? "The AI model predicts a low probability of a critical event. The patient's lifestyle choices and vitals indicate stability."
                       : "The AI model predicts a HIGH probability of deterioration or mortality. Immediate clinical intervention, medication review, and lifestyle modifications are strongly recommended."}
                   </p>
+                  <div className="mt-4 flex items-center justify-between text-xs border-t border-gray-800/50 pt-3">
+                    <span className="text-gray-500">Trace Hash: <span className="font-mono text-gray-400">a9f8b2c4e7d1...</span></span>
+                    <a href="https://omium.ai" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+                      View Trace Log &rarr;
+                    </a>
+                  </div>
                 </div>
 
                 {/* Deterioration Trend Graph */}

@@ -33,19 +33,19 @@ class ConsultationAgent:
         1. Summarize the clinical conversation.
         2. Extract any medicines discussed or suggested by the doctor.
         3. Check for potential drug-drug conflicts between the new medicines and the patient's existing medications: {json.dumps(patient_context.get('medications', []))}
-        4. Generate a structured prescription (JSON format).
+        4. Generate a structured prescription (JSON format). IMPORTANT: Pay close attention to when the medicine should be taken. You MUST explicitly provide the exact times of day ("morning", "afternoon", "evening", "night") for EVERY single medicine in the `timeOfDay` list.
         
         Return a JSON object with:
         - "summary": string
         - "extracted_meds": list of strings
         - "conflicts": list of objects with {{"pair": "med1 vs med2", "severity": "high/medium/low", "message": "reason"}}
-        - "prescription": list of objects with {{"medicineName": string, "dosage": string, "frequency": string, "duration": string}}
+        - "prescription": list of objects with {{"medicineName": string, "dosage": string, "frequency": string, "duration": string, "timeOfDay": list of strings MUST contain ["morning", "afternoon", "evening", or "night"], "timing": string (e.g., 'after food', 'before food'), "instructions": string}}
         - "reasoning": explain your findings
         """
 
         try:
             chat = groq_client.chat.completions.create(
-                model="llama-3.1-70b-versatile",
+                model="llama-3.3-70b-versatile",
                 messages=[{"role": "user", "content": prompt}],
                 response_format={"type": "json_object"}
             )
