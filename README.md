@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/activity.svg" alt="Prana AI Logo" width="80" height="80">
+  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/heart-pulse.svg" alt="Prana AI Logo" width="80" height="80">
   
   # Prana AI G-Force
   **Autonomous Multi-Agent Clinical Intelligence**
